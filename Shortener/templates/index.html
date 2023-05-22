@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Url Shortener | Get your Website link in front of people with ease.</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body class="bg-white">
+    <h1 class="text-center pt-4">Url Shortener Django App</h1>
+
+    <div class="container text-center bg-warning my-5 py-5" style="border-radius: .5em;">
+
+        <form id="form" action="" method="POST">
+            {% csrf_token %}
+            <div class="container-fluid">
+                <input id="url" class="form-control form-control-lg py-5 pl-5" style="box-shadow: 0px 0px 10px 0 #000; border-radius: 5em;"
+                    name="url" type="text" placeholder="Enter a valid URL">
+                <br>
+                <br>
+                <input type="submit" class="btn btn-dark btn-lg" value="Shorten">
+            </div>
+        </form>
+
+        <h4 id="get-link" class="my-3 text-secondary text-primary"></h4>
+
+        <button class="btn btn-outline-light btn-lg" id="copybtn" onclick="copylink()">Copy</button>
+    </div>
+
+
+    <script>
+
+        $('#copybtn').hide()
+
+        $(document).on('submit', '#form', function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                data: {
+                    url: $('#url').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (data) {
+                    document.getElementById('get-link').innerHTML = data;
+                    $('#copybtn').show()
+                },
+
+                error: function (error) { console.log('Error: ', error) }
+
+            })
+        })
+
+
+        function copylink() {
+            var field = document.getElementById('get-link')
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(field.innerHTML)
+                alert('Link copied')
+
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = field.innerHTML;
+
+                textarea.style.position = 'absolute';
+                textarea.style.left = '-99999999px';
+
+                document.body.prepend(textarea);
+
+                // highlight the content of the textarea element
+                textarea.select();
+
+                try {
+                    document.execCommand('copy');
+                   alert('Link copied')
+                } catch (err) {
+                    console.log(err);
+                } finally {
+                    textarea.remove();
+                }
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
