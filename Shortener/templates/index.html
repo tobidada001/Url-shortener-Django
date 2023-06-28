@@ -20,7 +20,7 @@
         <form id="form" action="" method="POST">
             {% csrf_token %}
             <div class="container-fluid">
-                <input id="url" class="form-control form-control-lg py-5 pl-5" style="box-shadow: 0px 0px 10px 0 #000; border-radius: 5em;"
+                <input id="url" class="form-control form-control-lg pl-5" style="padding-top: 1.5em; padding-bottom: 1.5em; box-shadow: 0px 0px 10px 0 #000; border-radius: 5em;"
                     name="url" type="text" placeholder="Enter a valid URL">
                 <br>
                 <br>
@@ -28,7 +28,7 @@
             </div>
         </form>
 
-        <h4 id="get-link" class="my-3 text-secondary text-primary"></h4>
+        <h4 id="get-link" style="font-weight: 300; word-wrap: break-word;" class="my-3 text-secondary text-primary"></h4>
 
         <button class="btn btn-outline-light btn-lg" id="copybtn" onclick="copylink()">Copy</button>
     </div>
