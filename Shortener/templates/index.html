@@ -48,8 +48,13 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (data) {
-                    document.getElementById('get-link').innerHTML = data;
-                    $('#copybtn').show()
+                    if (data.error){
+                        document.getElementById('get-link').innerHTML = data.error;
+                    }else{
+                        document.getElementById('get-link').innerHTML = data;
+                        $('#copybtn').show()
+                    }
+                    
                 },
 
                 error: function (error) { console.log('Error: ', error) }
