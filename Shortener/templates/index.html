@@ -67,8 +67,10 @@
             var field = document.getElementById('get-link')
             
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(field.innerHTML)
-                alert('Link copied')
+                navigator.clipboard.writeText(field.innerHTML).then(function(){
+                    window.alert('Link now copied')
+                })
+                .catch(err)
 
             } else {
                 const textarea = document.createElement('textarea');
