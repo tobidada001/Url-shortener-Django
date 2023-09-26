@@ -19,16 +19,19 @@ class IndexView(View):
         if url:
             if not parsed.scheme:
                 scheme = "https" if request.is_secure() else "http"
-            else:
-                scheme = parsed.scheme
+            # else:
+            #     scheme = parsed.scheme
 
-            data = ShortenedUrl.objects.create(url = url, short_url = str(uuid.uuid4())[:8], scheme = scheme)
-            return HttpResponse(scheme+ '://' + str(get_current_site(request)) +'/'+ data.short_url)
+                data = ShortenedUrl.objects.create(url = url, short_url = scheme + '://' + str(uuid.uuid4())[:8])
+                return HttpResponse(scheme+ '://' + str(get_current_site(request)) +'/'+ data.short_url)
+            
+            data = ShortenedUrl.objects.create(url = url, short_url = str(uuid.uuid4())[:8])
+            return HttpResponse(parsed.scheme+ '://' + str(get_current_site(request)) +'/'+ data.short_url)
         else:
             return JsonResponse({ 'error' : 'Url field must not be empty.'})
 
 
 def redirect_to_link(request, part):
     link = get_object_or_404(ShortenedUrl, short_url = part)
-    return redirect(link.scheme + '://' + link.url)
+    return redirect(link.url)
 
